@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Polaris Shop · Prototipo del sistema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1F3B;--muted:#5E6385;--bg:#F6F5FB;--card:#fff;--line:#E3E1F0;--brand:#2B3A7A;--brand-ink:#fff;--tint:#EEEBFA;--rose:#D94F70;--gold:#F2B544;--ok:#2E7D5B;--okbg:#E3F3EB;--warn:#9A6200;--warnbg:#FFF1D6;--err:#B3261E;--errbg:#FDE9E7;--info:#2B3A7A;--infobg:#E6E9F8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#ECEBF7;--muted:#A5A9C9;--bg:#13152A;--card:#1C1F3A;--line:#2E3258;--brand:#8E9BE8;--brand-ink:#13152A;--tint:#262A52;--rose:#F07C98;--ok:#6FD0A2;--okbg:#1B3A2E;--warn:#F2C46B;--warnbg:#3F3216;--err:#FF9A92;--errbg:#44201D;--info:#B6BFF5;--infobg:#262B5A}}
+:root[data-theme="dark"]{--ink:#ECEBF7;--muted:#A5A9C9;--bg:#13152A;--card:#1C1F3A;--line:#2E3258;--brand:#8E9BE8;--brand-ink:#13152A;--tint:#262A52;--rose:#F07C98;--ok:#6FD0A2;--okbg:#1B3A2E;--warn:#F2C46B;--warnbg:#3F3216;--err:#FF9A92;--errbg:#44201D;--info:#B6BFF5;--infobg:#262B5A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14px/1.5 Poppins,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1{font-size:22px;margin:0 0 2px;font-weight:600}h2{font-size:15px;margin:0 0 12px;font-weight:600}
+.muted{color:var(--muted)}
+.screen{display:none}.screen.on{display:block}
+/* Login */
+.login{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr}
+.hero{background:var(--brand);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.hero svg{position:absolute;right:-40px;bottom:-30px;opacity:.9}
+.hero h1{font-size:34px;line-height:1.2;max-width:14ch;font-weight:600}.hero p{max-width:34ch;opacity:.85}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.logo i{width:30px;height:30px;border-radius:50%;background:var(--gold);display:grid;place-items:center;color:var(--brand);font-style:normal;font-size:16px}
+.loginbox{display:grid;place-items:center;padding:32px}
+.loginbox form{width:100%;max-width:340px}
+/* Shell */
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
+.side{background:var(--card);border-right:1px solid var(--line);padding:20px 14px;display:flex;flex-direction:column;gap:4px}
+.side .logo{color:var(--brand);padding:0 8px 18px}
+.side a{display:block;padding:9px 12px;border-radius:10px;color:var(--ink);text-decoration:none;font-weight:500}
+.side a:hover{background:var(--tint)}.side a.on{background:var(--brand);color:var(--brand-ink)}
+.side .who{margin-top:auto;padding:10px 12px;border-top:1px solid var(--line);font-size:12px}
+.main{padding:28px 32px;min-width:0}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.grid{display:grid;gap:16px}.g4{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1.5fr 1fr}.g3{grid-template-columns:2fr 1fr}
+.kpi b{display:block;font-size:24px;font-weight:600;margin-top:2px}
+.kpi.accent{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}.kpi.accent .muted{color:inherit;opacity:.8}
+.btn{border:0;border-radius:10px;padding:9px 16px;background:var(--brand);color:var(--brand-ink);font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.sec{background:var(--tint);color:var(--brand)}.btn.rose{background:var(--rose);color:#fff}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:600;white-space:nowrap}
+.b-Pendiente{background:var(--warnbg);color:var(--warn)}.b-Elaboración{background:var(--infobg);color:var(--info)}.b-Listo{background:var(--tint);color:var(--brand)}
+.b-Enviado{background:var(--infobg);color:var(--info)}.b-Entregado{background:var(--okbg);color:var(--ok)}.b-Cancelado{background:var(--errbg);color:var(--err)}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 10px;border-bottom:1px solid var(--line)}
+tbody tr.link{cursor:pointer}tbody tr.link:hover{background:var(--tint)}
+td.n,th.n{text-align:right}
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.tools input,.tools select{flex:1;min-width:150px}
+label{display:block;font-weight:500;margin:0 0 4px;font-size:13px}
+input,select,textarea{width:100%;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card)}
+textarea{resize:vertical;min-height:70px}
+.field{margin-bottom:14px}.fg{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+.field.bad input,.field.bad select,.field.bad textarea{border-color:var(--err)}
+.err{display:none;color:var(--err);font-size:12px;margin-top:4px}.field.bad .err{display:block}
+.hint{font-size:12px;color:var(--muted);margin-top:4px}
+.seg{display:flex;gap:10px}.seg label{flex:1;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;cursor:pointer;display:flex;gap:8px;align-items:center;margin:0}
+.seg input{width:auto}.seg label:has(input:checked){border-color:var(--brand);background:var(--tint)}
+.alert{background:var(--errbg);color:var(--err);border-radius:10px;padding:10px 14px;margin-bottom:16px;font-weight:500;display:none}
+.alert.on{display:block}
+.row{display:flex;justify-content:space-between;gap:12px;padding:6px 0}.row.tot{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;font-weight:600;font-size:16px}
+.bar{display:grid;grid-template-columns:90px 1fr 24px;align-items:center;gap:10px;margin:9px 0;font-size:13px}.bar span i{display:block;height:10px;border-radius:6px;background:var(--brand)}
+.steps{display:flex;gap:6px;margin:4px 0 0;flex-wrap:wrap}.steps span{padding:3px 12px;border-radius:99px;background:var(--tint);color:var(--muted);font-size:12px;font-weight:500}.steps span.on{background:var(--brand);color:var(--brand-ink)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ok);color:#fff;padding:11px 20px;border-radius:12px;font-weight:600;display:none;z-index:9}
+.toast.on{display:block}
+ul.low{list-style:none;margin:0;padding:0}ul.low li{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line)}ul.low li:last-child{border:0}
+@media (max-width:860px){.login{grid-template-columns:1fr}.hero{display:none}.shell{grid-template-columns:1fr}.side{flex-direction:row;flex-wrap:wrap;padding:10px}.side .logo{padding:0 8px}.side .who{display:none}.main{padding:18px 14px}.g4,.g2,.g3,.fg{grid-template-columns:1fr}.g4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- 1. INICIO DE SESIÓN -->
+<section class="screen" id="login">
+ <div class="login">
+  <div class="hero">
+   <div class="logo"><i>★</i>Polaris Shop</div>
+   <div><h1>Tejido a mano, gestionado con orden.</h1><p>Inventario, pedidos y ventas de tus piezas de crochet en un solo lugar.</p></div>
+   <svg width="260" height="260" viewBox="0 0 260 260" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><circle cx="150" cy="150" r="100" stroke-opacity=".35"/><path d="M60 170c40-70 110-90 170-40M70 120c60-50 120-40 160 30M95 215c10-80 80-130 150-90M130 235c-10-50 20-110 80-140" stroke-opacity=".5"/><circle cx="150" cy="150" r="100" stroke-opacity=".15" transform="rotate(30 150 150) scale(1 .7)" /></svg>
+  </div>
+  <div class="loginbox">
+   <form id="loginForm" novalidate>
+    <h1>Iniciar sesión</h1><p class="muted" style="margin:0 0 20px">Ingresa con tu cuenta de Polaris Shop.</p>
+    <div class="alert" id="loginErr" role="alert">Correo o contraseña incorrectos. Revisa los datos e inténtalo de nuevo.</div>
+    <div class="field"><label for="correo">Correo electrónico</label><input id="correo" type="email" value="admin@polarisshop.cr" autocomplete="username"></div>
+    <div class="field"><label for="clave">Contraseña</label><input id="clave" type="password" value="polaris2026" autocomplete="current-password"></div>
+    <button class="btn" style="width:100%" type="submit">Entrar al sistema</button>
+    <p class="hint" style="margin-top:14px">Prototipo: cualquier correo y contraseña con datos escritos permite entrar.</p>
+   </form>
+  </div>
+ </div>
+</section>
+
+<!-- APP -->
+<div class="shell" id="app" style="display:none">
+ <nav class="side" aria-label="Menú principal">
+  <div class="logo"><i>★</i>Polaris Shop</div>
+  <a href="#panel" data-nav="panel">Panel</a>
+  <a href="#pedidos" data-nav="pedidos">Pedidos</a>
+  <a href="#nuevo" data-nav="nuevo">Nuevo pedido</a>
+  <div class="who"><b>Administradora</b><br><span class="muted">admin@polarisshop.cr</span><br><a href="#login" style="padding:6px 0;color:var(--rose)">Cerrar sesión</a></div>
+ </nav>
+ <main class="main">
+
+  <!-- 2. PANEL -->
+  <section class="screen" id="panel">
+   <div class="top"><div><h1>Panel principal</h1><span class="muted">Resumen de Polaris Shop · octubre 2026</span></div><a class="btn" href="#nuevo">Registrar pedido</a></div>
+   <div class="grid g4" style="margin-bottom:16px">
+    <div class="card kpi accent"><span class="muted">Ventas del mes</span><b id="kVentas"></b></div>
+    <div class="card kpi"><span class="muted">Pedidos en curso</span><b id="kCurso"></b></div>
+    <div class="card kpi"><span class="muted">Pedidos por encargo</span><b id="kEncargo"></b></div>
+    <div class="card kpi"><span class="muted">Materiales con stock bajo</span><b>3</b></div>
+   </div>
+   <div class="grid g3">
+    <div class="card"><h2>Pedidos recientes</h2><div class="tw"><table><thead><tr><th>N.º</th><th>Cliente</th><th>Estado</th><th class="n">Total</th></tr></thead><tbody id="recent"></tbody></table></div></div>
+    <div class="grid" style="align-content:start">
+     <div class="card"><h2>Pedidos por canal</h2><div id="canales"></div></div>
+     <div class="card"><h2>Stock bajo de materiales</h2><ul class="low"><li><span>Lana lila</span><b style="color:var(--err)">2 ovillos</b></li><li><span>Ojos de seguridad 8 mm</span><b style="color:var(--err)">6 pares</b></li><li><span>Relleno de fibra</span><b style="color:var(--err)">150 g</b></li></ul></div>
+    </div>
+   </div>
+  </section>
+
+  <!-- 3. LISTADO -->
+  <section class="screen" id="pedidos">
+   <div class="top"><div><h1>Pedidos</h1><span class="muted">Busca por cliente o número, y filtra por estado y canal.</span></div><a class="btn" href="#nuevo">Registrar pedido</a></div>
+   <div class="card">
+    <div class="tools">
+     <input id="q" type="search" placeholder="Buscar por cliente o N.º de pedido" aria-label="Buscar pedido">
+     <select id="fEstado" aria-label="Filtrar por estado"><option value="">Todos los estados</option><option>Pendiente</option><option>En elaboración</option><option>Listo</option><option>Enviado</option><option>Entregado</option><option>Cancelado</option></select>
+     <select id="fCanal" aria-label="Filtrar por canal"><option value="">Todos los canales</option><option>Instagram</option><option>WhatsApp</option><option>Facebook</option></select>
+    </div>
+    <div class="tw"><table><thead><tr><th>N.º pedido</th><th>Cliente</th><th>Canal</th><th>Fecha</th><th>Tipo</th><th>Estado</th><th class="n">Total</th></tr></thead><tbody id="lista"></tbody></table></div>
+    <p class="muted" id="count" style="margin:12px 0 0"></p>
+   </div>
+  </section>
+
+  <!-- 4. FORMULARIO -->
+  <section class="screen" id="nuevo">
+   <div class="top"><div><h1>Registrar pedido</h1><span class="muted">Los campos con * son obligatorios.</span></div></div>
+   <form id="pForm" novalidate>
+    <div class="grid g3" style="align-items:start">
+     <div class="card">
+      <div class="alert" id="formErr" role="alert">Hay campos por corregir. Revisa los mensajes en rojo.</div>
+      <div class="fg">
+       <div class="field" data-f="cliente"><label for="cliente">Cliente *</label><select id="cliente"><option value="">Selecciona un cliente</option><option>Valeria Mora</option><option>Daniela Rojas</option><option>Karla Jiménez</option><option>Andrea Solís</option></select><div class="err">Selecciona la persona que hace el pedido.</div></div>
+       <div class="field" data-f="canal"><label for="canal">Canal de venta *</label><select id="canal"><option value="">Selecciona un canal</option><option>Instagram</option><option>WhatsApp</option><option>Facebook</option></select><div class="err">Indica por dónde llegó el pedido.</div></div>
+      </div>
+      <div class="field"><label>Tipo de pedido *</label><div class="seg"><label><input type="radio" name="tipo" value="Stock" checked> Producto en stock</label><label><input type="radio" name="tipo" value="Por encargo"> Por encargo</label></div></div>
+      <div class="fg">
+       <div class="field" data-f="producto"><label for="producto">Producto *</label><select id="producto"><option value="">Selecciona un producto</option></select><div class="hint" id="stockHint">&nbsp;</div><div class="err">Elige un producto del catálogo.</div></div>
+       <div class="field" data-f="cantidad"><label for="cantidad">Cantidad *</label><input id="cantidad" type="number" min="1" inputmode="numeric" value="1"><div class="err" id="cantErr">Ingresa una cantidad mayor a cero.</div></div>
+      </div>
+      <div class="field" data-f="obs"><label for="obs">Personalización (colores, tamaño, detalles)</label><textarea id="obs" placeholder="Ej.: osito lila de 25 cm con lazo blanco"></textarea><div class="err">En un pedido por encargo, describe la personalización.</div></div>
+      <div class="fg">
+       <div class="field" data-f="fecha"><label for="fecha">Fecha de entrega estimada *</label><input id="fecha" type="date"><div class="err" id="fechaErr">Elige una fecha de entrega.</div></div>
+       <div class="field"><label for="envio">Costo de envío (₡)</label><input id="envio" type="number" min="0" value="0"></div>
+      </div>
+     </div>
+     <div class="card">
+      <h2>Resumen</h2>
+      <div class="row"><span class="muted">Precio unitario</span><span id="sPrecio">₡0</span></div>
+      <div class="row"><span class="muted">Subtotal</span><span id="sSub">₡0</span></div>
+      <div class="row"><span class="muted">Envío</span><span id="sEnv">₡0</span></div>
+      <div class="row tot"><span>Total</span><span id="sTot">₡0</span></div>
+      <div style="display:grid;gap:8px;margin-top:16px"><button class="btn" type="submit">Guardar pedido</button><a class="btn sec" href="#pedidos" style="text-align:center">Cancelar</a></div>
+     </div>
+    </div>
+   </form>
+  </section>
+
+  <!-- 5. DETALLE -->
+  <section class="screen" id="detalle">
+   <div class="top"><div><h1 id="dTitulo"></h1><div class="steps" id="dSteps"></div></div><div style="display:flex;gap:8px"><a class="btn sec" href="#pedidos">Volver al listado</a></div></div>
+   <div class="grid g3" style="align-items:start">
+    <div class="grid">
+     <div class="card"><h2>Productos del pedido</h2><div class="tw"><table><thead><tr><th>Producto</th><th class="n">Cant.</th><th class="n">Precio</th><th class="n">Subtotal</th></tr></thead><tbody id="dItems"></tbody></table></div><p class="muted" id="dObs" style="margin:12px 0 0"></p></div>
+     <div class="grid" style="grid-template-columns:1fr 1fr">
+      <div class="card"><h2>Cliente</h2><div id="dCli"></div></div>
+      <div class="card"><h2>Entrega</h2><div id="dEnv"></div></div>
+     </div>
+    </div>
+    <div class="card"><h2>Resumen de pago</h2><div id="dPago"></div></div>
+   </div>
+  </section>
+ </main>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+var HOY="2026-10-15";
+var PRODUCTOS=[["Amigurumi osito",14500,3],["Llavero de estrella",1500,12],["Gorro de lana",9000,4],["Bolso tejido",11500,2],["Set de posavasos",2000,15]];
+var P=[
+{id:1048,cli:"Valeria Mora",tel:"8812-3456",red:"@valeria.mora",canal:"Instagram",f:"2026-10-12",est:"En elaboración",tipo:"Por encargo",items:[["Amigurumi osito",1,14500],["Llavero de estrella",2,1500]],env:1000,emp:"Correos de Costa Rica",dir:"San Ramón, Alajuela",pag:9250,obs:"Osito lila de 25 cm con lazo blanco."},
+{id:1047,cli:"Daniela Rojas",tel:"8765-4321",red:"@dani.rojas",canal:"WhatsApp",f:"2026-10-11",est:"Pendiente",tipo:"Stock",items:[["Gorro de lana",1,9000]],env:0,emp:"Retiro en persona",dir:"Zarcero, Alajuela",pag:0,obs:""},
+{id:1046,cli:"Karla Jiménez",tel:"8654-1122",red:"@karlaj",canal:"Facebook",f:"2026-10-09",est:"Listo",tipo:"Stock",items:[["Bolso tejido",1,11500]],env:1000,emp:"Correos de Costa Rica",dir:"Naranjo, Alajuela",pag:12500,obs:""},
+{id:1045,cli:"Andrea Solís",tel:"8890-7712",red:"@andrea.solis",canal:"Instagram",f:"2026-10-08",est:"Enviado",tipo:"Por encargo",items:[["Cobija para bebé",1,22000]],env:2000,emp:"Correos de Costa Rica",dir:"Heredia centro",pag:24000,obs:"Color menta con borde blanco."},
+{id:1044,cli:"Mariana Cruz",tel:"8321-9090",red:"@mari.cruz",canal:"WhatsApp",f:"2026-10-05",est:"Entregado",tipo:"Stock",items:[["Set de posavasos",3,2000]],env:1500,emp:"Mensajería local",dir:"Grecia, Alajuela",pag:7500,obs:""},
+{id:1043,cli:"Paola Vargas",tel:"8455-6677",red:"@paola.v",canal:"Instagram",f:"2026-10-03",est:"Entregado",tipo:"Por encargo",items:[["Amigurumi dragón",1,28000]],env:3000,emp:"Correos de Costa Rica",dir:"Liberia, Guanacaste",pag:31000,obs:"Dragón verde con alas moradas."},
+{id:1042,cli:"Sofía Araya",tel:"8111-2233",red:"@sofia.araya",canal:"Facebook",f:"2026-10-01",est:"Cancelado",tipo:"Stock",items:[["Flor decorativa",1,6500]],env:0,emp:"Retiro en persona",dir:"Alajuela centro",pag:0,obs:""}];
+var ETAPAS=["Pendiente","En elaboración","Listo","Enviado","Entregado"];
+var $=function(s){return document.querySelector(s)},$$=function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+function crc(n){return "₡"+Number(n).toLocaleString("es-CR").replace(/\u00a0/g," ")}
+function tot(p){return p.items.reduce(function(a,i){return a+i[1]*i[2]},0)+p.env}
+function badge(e){return '<span class="badge b-'+(e==="En elaboración"?"Elaboración":e)+'">'+e+'</span>'}
+function fdate(s){var d=s.split("-");return d[2]+"/"+d[1]+"/"+d[0]}
+
+function renderPanel(){
+ var v=P.filter(function(p){return p.pag>=tot(p)&&p.est!=="Cancelado"}).reduce(function(a,p){return a+tot(p)},0);
+ $("#kVentas").textContent=crc(v);
+ $("#kCurso").textContent=P.filter(function(p){return["Pendiente","En elaboración","Listo"].indexOf(p.est)>-1}).length;
+ $("#kEncargo").textContent=P.filter(function(p){return p.tipo==="Por encargo"&&p.est!=="Cancelado"&&p.est!=="Entregado"}).length;
+ $("#recent").innerHTML=P.slice(0,5).map(function(p){return '<tr class="link" data-id="'+p.id+'"><td>#'+p.id+'</td><td>'+p.cli+'</td><td>'+badge(p.est)+'</td><td class="n">'+crc(tot(p))+'</td></tr>'}).join("");
+ var c={};P.forEach(function(p){c[p.canal]=(c[p.canal]||0)+1});
+ $("#canales").innerHTML=Object.keys(c).map(function(k){return '<div class="bar"><span>'+k+'</span><span><i style="width:'+c[k]/3*100+'%"></i></span><b>'+c[k]+'</b></div>'}).join("");
+}
+function renderLista(){
+ var q=$("#q").value.trim().toLowerCase(),e=$("#fEstado").value,c=$("#fCanal").value;
+ var r=P.filter(function(p){return(!q||p.cli.toLowerCase().indexOf(q)>-1||String(p.id).indexOf(q)>-1)&&(!e||p.est===e)&&(!c||p.canal===c)});
+ $("#lista").innerHTML=r.length?r.map(function(p){return '<tr class="link" data-id="'+p.id+'"><td><b>#'+p.id+'</b></td><td>'+p.cli+'</td><td>'+p.canal+'</td><td>'+fdate(p.f)+'</td><td>'+p.tipo+'</td><td>'+badge(p.est)+'</td><td class="n">'+crc(tot(p))+'</td></tr>'}).join(""):'<tr><td colspan="7" class="muted" style="text-align:center;padding:28px">No hay pedidos con esos filtros. Prueba quitando alguno.</td></tr>';
+ $("#count").textContent="Mostrando "+r.length+" de "+P.length+" pedidos";
+}
+function renderDetalle(id){
+ var p=P.filter(function(x){return x.id==id})[0]||P[0],t=tot(p),sub=t-p.env;
+ $("#dTitulo").textContent="Pedido #"+p.id+" · "+p.tipo;
+ var idx=ETAPAS.indexOf(p.est);
+ $("#dSteps").innerHTML=p.est==="Cancelado"?badge("Cancelado"):ETAPAS.map(function(s,i){return '<span class="'+(i<=idx?"on":"")+'">'+s+'</span>'}).join("");
+ $("#dItems").innerHTML=p.items.map(function(i){return '<tr><td>'+i[0]+'</td><td class="n">'+i[1]+'</td><td class="n">'+crc(i[2])+'</td><td class="n">'+crc(i[1]*i[2])+'</td></tr>'}).join("");
+ $("#dObs").innerHTML=p.obs?'<b>Personalización:</b> '+p.obs:"Sin personalización.";
+ $("#dCli").innerHTML='<b>'+p.cli+'</b><br><span class="muted">'+p.red+'</span><br>'+p.tel+'<br><span class="muted">Canal: '+p.canal+'</span>';
+ $("#dEnv").innerHTML='<b>'+p.emp+'</b><br>'+p.dir+'<br><span class="muted">Pedido: '+fdate(p.f)+'</span>';
+ var saldo=t-p.pag;
+ $("#dPago").innerHTML='<div class="row"><span class="muted">Subtotal</span><span>'+crc(sub)+'</span></div><div class="row"><span class="muted">Envío</span><span>'+crc(p.env)+'</span></div><div class="row tot"><span>Total</span><span>'+crc(t)+'</span></div><div class="row"><span class="muted">Pagado (SINPE Móvil)</span><span>'+crc(p.pag)+'</span></div><div class="row"><span class="muted">Saldo pendiente</span><b style="color:'+(saldo?"var(--rose)":"var(--ok)")+'">'+crc(saldo)+'</b></div><p style="margin:12px 0 0">'+(p.est==="Cancelado"?badge("Cancelado"):saldo?'<span class="badge b-Pendiente">Pago incompleto</span>':'<span class="badge b-Entregado">Venta registrada</span>')+'</p>';
+}
+/* formulario */
+function sel(){return PRODUCTOS.filter(function(p){return p[0]===$("#producto").value})[0]}
+function calc(){var p=sel(),c=Math.max(0,+$("#cantidad").value||0),e=Math.max(0,+$("#envio").value||0);
+ $("#sPrecio").textContent=crc(p?p[1]:0);$("#sSub").textContent=crc(p?p[1]*c:0);$("#sEnv").textContent=crc(e);$("#sTot").textContent=crc((p?p[1]*c:0)+e);
+ $("#stockHint").textContent=p?"Disponibles en stock: "+p[2]:"\u00a0"}
+function bad(f,on,msg){var el=$('[data-f="'+f+'"]');el.classList.toggle("bad",on);if(msg){el.querySelector(".err").textContent=msg}return on}
+function validar(){var p=sel(),c=+$("#cantidad").value,enc=document.querySelector('input[name="tipo"]:checked').value==="Por encargo",n=0;
+ n+=bad("cliente",!$("#cliente").value);n+=bad("canal",!$("#canal").value);n+=bad("producto",!p);
+ var cm=c>0?(p&&c>p[2]&&!enc?"Solo hay "+p[2]+" en stock. Baja la cantidad o marca el pedido como por encargo.":""):"Ingresa una cantidad mayor a cero.";
+ n+=bad("cantidad",!!cm,cm);
+ n+=bad("obs",enc&&!$("#obs").value.trim());
+ var f=$("#fecha").value,fm=!f?"Elige una fecha de entrega.":(f<HOY?"La fecha no puede ser anterior a hoy.":"");n+=bad("fecha",!!fm,fm);
+ $("#formErr").classList.toggle("on",n>0);return n===0}
+function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");setTimeout(function(){t.classList.remove("on")},2400)}
+/* enrutador */
+function route(){
+ var h=(location.hash||"#login").slice(1),id=null;if(h.indexOf("detalle")===0){id=h.split("/")[1];h="detalle"}
+ if(["login","panel","pedidos","nuevo","detalle"].indexOf(h)<0)h="login";
+ $("#app").style.display=h==="login"?"none":"grid";
+ $$(".screen").forEach(function(s){s.classList.toggle("on",s.id===h)});
+ $$("[data-nav]").forEach(function(a){a.classList.toggle("on",a.dataset.nav===(h==="detalle"?"pedidos":h))});
+ if(h==="panel")renderPanel();if(h==="pedidos")renderLista();if(h==="detalle")renderDetalle(id);
+ window.scrollTo(0,0);
+}
+document.addEventListener("click",function(e){var r=e.target.closest("tr.link");if(r)location.hash="detalle/"+r.dataset.id});
+$("#loginForm").addEventListener("submit",function(e){e.preventDefault();var ok=$("#correo").value.trim()&&$("#clave").value;$("#loginErr").classList.toggle("on",!ok);if(ok)location.hash="panel"});
+["q","fEstado","fCanal"].forEach(function(i){$("#"+i).addEventListener("input",renderLista)});
+$("#producto").innerHTML+=PRODUCTOS.map(function(p){return "<option>"+p[0]+"</option>"}).join("");
+["producto","cantidad","envio"].forEach(function(i){$("#"+i).addEventListener("input",calc)});
+$("#pForm").addEventListener("submit",function(e){e.preventDefault();if(validar()){toast("Pedido guardado");$("#pForm").reset();calc();$$(".field.bad").forEach(function(f){f.classList.remove("bad")});location.hash="pedidos"}});
+$("#fecha").min=HOY;
+window.addEventListener("hashchange",route);route();calc();
+</script>
+</body>
+</html>
